@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Result简介Result是Swft 5.0中新加入枚举值，Apple的官方文档定义如下：  A value that represents either a success or a failure, including an associated value in each case.  翻译过来就是Result是一个只有success或failure的枚举，每个case都有关联值。 Res">
+<meta name="keywords" content="Swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift基础-Result介绍">
+<meta property="og:url" content="http://nerogame.me/2019/05/02/Swift基础-Result介绍/index.html">
+<meta property="og:site_name" content="Yue&#39;s Blog">
+<meta property="og:description" content="Result简介Result是Swft 5.0中新加入枚举值，Apple的官方文档定义如下：  A value that represents either a success or a failure, including an associated value in each case.  翻译过来就是Result是一个只有success或failure的枚举，每个case都有关联值。 Res">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-05-02T14:39:30.602Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift基础-Result介绍">
+<meta name="twitter:description" content="Result简介Result是Swft 5.0中新加入枚举值，Apple的官方文档定义如下：  A value that represents either a success or a failure, including an associated value in each case.  翻译过来就是Result是一个只有success或failure的枚举，每个case都有关联值。 Res">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://nerogame.me/2019/05/02/Swift基础-Result介绍/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Swift基础-Result介绍 | Yue's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yue's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">Just For Fun.</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://nerogame.me/2019/05/02/Swift基础-Result介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yue Wu">
+      <meta itemprop="description" content="Yue Wu - A senior C developer and new to Swift, focus on Application development and Network programming.">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yue's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Swift基础-Result介绍
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-02 10:44:14 / Modified: 22:39:30" itemprop="dateCreated datePublished" datetime="2019-05-02T10:44:14+08:00">2019-05-02</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Result简介"><a href="#Result简介" class="headerlink" title="Result简介"></a>Result简介</h3><p>Result是Swft 5.0中新加入枚举值，Apple的官方文档定义如下：</p>
+<blockquote>
+<p>A value that represents either a success or a failure, including an associated value in each case.</p>
+</blockquote>
+<p>翻译过来就是Result是一个只有<em>success</em>或<em>failure</em>的枚举，每个case都有关联值。</p>
+<h3 id="Result的用途"><a href="#Result的用途" class="headerlink" title="Result的用途"></a>Result的用途</h3><p>Result主要用于异步block内抛出错误，详见<a href="https://github.com/apple/swift-evolution/blob/master/proposals/0235-add-result.md" target="_blank" rel="noopener">SE0235</a>。</p>
+<p>异步block抛出错误的场景在日常开发中是非常见的，最典型的就是异步I/O操作，本文将以异步读取网络数据为例进行讨论。<br>假设现在我们存在如下的异步读取网络数据代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleAsyncFetchDataDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> queue: <span class="type">DispatchQueue</span></span><br><span class="line">    <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">self</span>.queue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.wooy.swift.simpleAsyncFetchDataDemo"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 这是一个通过url异步读取一个字符串内容的方法</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - Parameters:</span></span><br><span class="line">    <span class="comment">///   - url: 目标url</span></span><br><span class="line">    <span class="comment">///   - completion: 读取完成回调block</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fetchData</span><span class="params">(forUrl url: String, completion: @escaping <span class="params">(String)</span></span></span> -&gt; <span class="type">Void</span>) -&gt; <span class="type">Void</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.queue.async &#123;</span><br><span class="line">            sleep(<span class="number">2</span>) <span class="comment">// 这里让线程sleep 2秒模拟网络请求过程</span></span><br><span class="line">            <span class="keyword">let</span> mockString = <span class="string">"This is content from server."</span></span><br><span class="line">            completion(mockString)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试代码</span></span><br><span class="line"><span class="keyword">let</span> demo = <span class="type">SimpleAsyncFetchDataDemo</span>()</span><br><span class="line">demo.fetchData(forUrl: <span class="string">"https://apple.com/store/list"</span>) &#123; (data: <span class="type">String</span>) <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"Data from server: \(data)"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码是一个非常理想的场景，即没有任何错误，下面让我们对它进行一点扩展，让它能够处理请求超时的情况。</p>
+<h4 id="第1种实现"><a href="#第1种实现" class="headerlink" title="第1种实现"></a>第1种实现</h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleAsyncFetchDataDemo</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">enum</span> <span class="title">FetchDataDemoError</span>: <span class="title">Error</span> </span>&#123;</span><br><span class="line">        <span class="keyword">case</span> requestTimeoutError</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> queue: <span class="type">DispatchQueue</span></span><br><span class="line">    <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">self</span>.queue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.wooy.swift.simpleAsyncFetchDataDemo"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 这是一个通过url异步读取一个字符串内容的方法</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - Parameters:</span></span><br><span class="line">    <span class="comment">///   - url: 目标url</span></span><br><span class="line">    <span class="comment">///   - completion: 读取完成回调block</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fetchData</span><span class="params">(forUrl url: String, completion: @escaping <span class="params">(FetchDataDemoError?, String?)</span></span></span> -&gt; <span class="type">Void</span>) -&gt; <span class="type">Void</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.queue.async &#123;</span><br><span class="line">            [<span class="keyword">unowned</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">            sleep(<span class="number">2</span>) <span class="comment">// 这里让线程sleep 2秒模拟网络请求过程</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">self</span>.isRequestTimeout &#123;</span><br><span class="line">                completion(.requestTimeoutError, <span class="literal">nil</span>)</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">let</span> mockString = <span class="string">"This is content from server."</span></span><br><span class="line">                completion(<span class="literal">nil</span>, mockString)</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 这是一个请求是否超时的mock方法</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">var</span> isRequestTimeout: <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Bool</span>.random()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试代码</span></span><br><span class="line"><span class="keyword">let</span> demo = <span class="type">SimpleAsyncFetchDataDemo</span>()</span><br><span class="line">demo.fetchData(forUrl: <span class="string">"https://apple.com/store/list"</span>) &#123; (error: <span class="type">SimpleAsyncFetchDataDemo</span>.<span class="type">FetchDataDemoError?</span>,  data: <span class="type">String?</span>) <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> error = error &#123; <span class="comment">// 处理错误</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Fetch data fail: \(error)"</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> data = data &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"Data from server: \(data)"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们对<code>fetchData</code>方法的<code>completion</code>参数进行了修改，把它从<code>(String) -&gt; Void</code>类型变成了<code>(FetchDataDemoError?, String?) -&gt; Void</code>类型，<code>FetchDataDemoError</code>是定义的fetchData的错误枚举类型。请求结束，有可能有错误，有可能没错误，因此需要定义成Optional类型(结果也是一样)。在定义callback的地方，我们需要先判断是否存在错误，存在错误优先处理错误，不存在错误则处理返回内容。</p>
+<p>这是典型的OC的错误回调方法，通过把错误包装成一个回调block的参数，传给调用方。但是在Swift中，我们有了统一的错误处理机制，让我们使用错误处理机制来实现它。</p>
+<h4 id="第2种实现"><a href="#第2种实现" class="headerlink" title="第2种实现"></a>第2种实现</h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleAsyncFetchDataDemo</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">enum</span> <span class="title">FetchDataDemoError</span>: <span class="title">Error</span> </span>&#123;</span><br><span class="line">        <span class="keyword">case</span> requestTimeoutError</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> queue: <span class="type">DispatchQueue</span></span><br><span class="line">    <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">self</span>.queue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.wooy.swift.simpleAsyncFetchDataDemo"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 这是一个通过url异步读取一个字符串内容的方法</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - Parameters:</span></span><br><span class="line">    <span class="comment">///   - url: 目标url</span></span><br><span class="line">    <span class="comment">///   - completion: 读取完成回调block</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fetchData</span><span class="params">(forUrl url: String, completion: @escaping <span class="params">(<span class="params">()</span></span></span></span> <span class="keyword">throws</span> -&gt; <span class="type">String</span>) -&gt; <span class="type">Void</span>) -&gt; <span class="type">Void</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.queue.async &#123;</span><br><span class="line">            [<span class="keyword">unowned</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">            sleep(<span class="number">2</span>) <span class="comment">// 这里让线程sleep 2秒模拟网络请求过程</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">self</span>.isRequestTimeout &#123;</span><br><span class="line">                completion(&#123; <span class="keyword">throw</span> <span class="type">FetchDataDemoError</span>.requestTimeoutError &#125;) <span class="comment">// 传入一个抛出异常的block</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">let</span> mockString = <span class="string">"This is content from server."</span></span><br><span class="line">                completion(&#123; mockString &#125;) <span class="comment">// 传入一个返回正常String的block</span></span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 这是一个请求是否超时的mock方法</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">var</span> isRequestTimeout: <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Bool</span>.random()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试代码</span></span><br><span class="line"><span class="keyword">let</span> demo = <span class="type">SimpleAsyncFetchDataDemo</span>()</span><br><span class="line">demo.fetchData(forUrl: <span class="string">"https://apple.com/store/list"</span>) &#123; </span><br><span class="line">    <span class="comment">// catching是第23或26行传入的block</span></span><br><span class="line">    (catching: () <span class="keyword">throws</span> -&gt; <span class="type">String</span>) <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> data = <span class="keyword">try</span> catching()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Data from server: \(data)"</span>)</span><br><span class="line">    &#125; <span class="keyword">catch</span> <span class="keyword">let</span> e <span class="keyword">where</span> e <span class="keyword">is</span> <span class="type">SimpleAsyncFetchDataDemo</span>.<span class="type">FetchDataDemoError</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Fetch data fail: \(e)"</span>)</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Some other error: \(error)"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们再次对<code>completion</code>参数进行了修改，从<code>(FetchDataDemoError?, String?) -&gt; Void</code>，改成了<code>(() throws -&gt; String) -&gt; Void</code>，即原来调用<code>completion</code>传入的参数，要不是某一个错误，或者是一个结果字符串，现在的入参变成了一个block，这个block是一个<em>无入参，但是调用返回String类型，并且可能抛出异常</em>的block。首先我们看<code>fetchData</code>方法内，现在是怎么传递内容/错误的。在第23行，我们返回了一个<strong>抛出异常的block</strong>，在第26行我们返回了一个<strong>返回正常String的block</strong>，分别对应请求超时和正常请求两种情况。然后让我们看看测试部分代码，首先catching是block，通过调用<code>try catching()</code>获取请求返回的内容，如果没有错误，则<code>data</code>会被赋值，即请求返回内容会给data；如果抛出错误则会被<code>catch</code>语句捕获，并在<code>catch</code>语句中处理响应的错误。</p>
+<p>上面我们已经实现了异步block内错误的抛出，而Result主要就是用来简化我们第2个版本代码的，下面介绍Result的用法。</p>
+<h3 id="Result的使用"><a href="#Result的使用" class="headerlink" title="Result的使用"></a>Result的使用</h3><p>接着用上面的例子，我们把<code>completion</code>block的入参修改为<code>(Result&lt;String, FetchDataDemoError&gt;) -&gt; Void</code>，其中<code>Result</code>里面的类型必须显示声明，<code>String</code>代表<em>success</em>关联值的类型，<code>FetchDataDemoError</code>代表<em>failure</em>关联值的类型(这里可以把错误类型定义成更通用的<code>Error</code>类型，在使用的地方去做向上转型即可)。在请求超时的地方，我们通过<code>result = .failure(.requestTimeoutError)</code>为失败的关联值赋值，在请求成功的地方，我们通过<code>result = .success(mockString)</code>为成功的关联值类型赋值。</p>
+<p>在使用的地方，我们可以通过<code>switch</code>语句提取值和处理错误，也可以使用和上面一样的<code>do try catch</code>语句提取值和处理错误。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleAsyncFetchDataDemo</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">enum</span> <span class="title">FetchDataDemoError</span>: <span class="title">Error</span> </span>&#123;</span><br><span class="line">        <span class="keyword">case</span> requestTimeoutError</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> queue: <span class="type">DispatchQueue</span></span><br><span class="line">    <span class="keyword">init</span>() &#123;</span><br><span class="line">        <span class="keyword">self</span>.queue = <span class="type">DispatchQueue</span>(label: <span class="string">"com.wooy.swift.simpleAsyncFetchDataDemo"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 这是一个通过url异步读取一个字符串内容的方法</span></span><br><span class="line">    <span class="comment">///</span></span><br><span class="line">    <span class="comment">/// - Parameters:</span></span><br><span class="line">    <span class="comment">///   - url: 目标url</span></span><br><span class="line">    <span class="comment">///   - completion: 读取完成回调block</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fetchData</span><span class="params">(forUrl url: String, completion: @escaping <span class="params">(Result&lt;String, FetchDataDemoError&gt;)</span></span></span> -&gt; <span class="type">Void</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.queue.async &#123;</span><br><span class="line">            [<span class="keyword">unowned</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">            sleep(<span class="number">2</span>) <span class="comment">// 这里让线程sleep 2秒模拟网络请求过程</span></span><br><span class="line">            <span class="keyword">var</span> result: <span class="type">Result</span>&lt;<span class="type">String</span>, <span class="type">FetchDataDemoError</span>&gt;</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">self</span>.isRequestTimeout &#123;</span><br><span class="line">                result = .failure(.requestTimeoutError) <span class="comment">// 为关联值附上错误</span></span><br><span class="line">                completion(result)</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">let</span> mockString = <span class="string">"This is content from server."</span></span><br><span class="line">                result = .success(mockString)   <span class="comment">// 为关联值附上成功响应的内容</span></span><br><span class="line">                completion(result)</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 这是一个请求是否超时的mock方法</span></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">var</span> isRequestTimeout: <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">Bool</span>.random()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 测试代码</span></span><br><span class="line"><span class="keyword">let</span> demo = <span class="type">SimpleAsyncFetchDataDemo</span>()</span><br><span class="line">demo.fetchData(forUrl: <span class="string">"https://apple.com/store/list"</span>) &#123; (result: <span class="type">Result</span>&lt;<span class="type">String</span>, <span class="type">SimpleAsyncFetchDataDemo</span>.<span class="type">FetchDataDemoError</span>&gt;) <span class="keyword">in</span></span><br><span class="line">    <span class="comment">// 写法一</span></span><br><span class="line">    <span class="keyword">switch</span> result &#123;</span><br><span class="line">    <span class="keyword">case</span> .success(<span class="keyword">let</span> data):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Data from server: \(data)"</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">case</span> .failure(<span class="keyword">let</span> e):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Fetch data fail: \(e)"</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 写法二</span></span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> data = <span class="keyword">try</span> result.<span class="keyword">get</span>()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Data from server: \(data)"</span>)</span><br><span class="line">    &#125; <span class="keyword">catch</span> <span class="keyword">let</span> e <span class="keyword">where</span> e <span class="keyword">is</span> <span class="type">SimpleAsyncFetchDataDemo</span>.<span class="type">FetchDataDemoError</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Fetch data fail: \(e)"</span>)</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Some other error: \(error)"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看了上面代码，不难发现其实Result的实现其实非常简单，和我们上面的第2种实现并无本质区别。但是它很好的展示了Swift中enum关联值类型的用法，这个抽象思维非常值得借鉴学习。下面是模仿<code>Result</code>接口的简单实现类似功能的<code>MyResult</code>。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">MyResult</span>&lt;<span class="title">Success</span>, <span class="title">Failure</span>: <span class="title">Error</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> success(<span class="type">Success</span>)</span><br><span class="line">    <span class="keyword">case</span> failure(<span class="type">Failure</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">()</span></span> <span class="keyword">throws</span> -&gt; <span class="type">Success</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> .success(<span class="keyword">let</span> s):</span><br><span class="line">            <span class="keyword">return</span> s</span><br><span class="line">        <span class="keyword">case</span> .failure(<span class="keyword">let</span> e):</span><br><span class="line">            <span class="keyword">throw</span> e</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="Yue Wu">
+            
+              <p class="site-author-name" itemprop="name">Yue Wu</p>
+              <div class="site-description motion-element" itemprop="description">Yue Wu - A senior C developer and new to Swift, focus on Application development and Network programming.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/imyuewu" title="GitHub &rarr; https://github.com/imyuewu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                  
+                    
+                  
+                  <a href="mailto:nerotech@hotmail.com" title="E-Mail &rarr; mailto:nerotech@hotmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Result简介"><span class="nav-number">1.</span> <span class="nav-text">Result简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Result的用途"><span class="nav-number">2.</span> <span class="nav-text">Result的用途</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第1种实现"><span class="nav-number">2.1.</span> <span class="nav-text">第1种实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第2种实现"><span class="nav-number">2.2.</span> <span class="nav-text">第2种实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Result的使用"><span class="nav-number">3.</span> <span class="nav-text">Result的使用</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yue Wu</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.1.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
